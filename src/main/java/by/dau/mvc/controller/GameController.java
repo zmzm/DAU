@@ -51,11 +51,15 @@ public class GameController {
     public CurrentState state(@PathVariable("id") long id) {
         GameState gameState = gameStateService.read(id);
         Match match = matchService.getByState(gameState);
+        CurrentState currentState = null;
+        if (match == null) {
+            return currentState;
+        }
         Set set = setService.getLastByMatch(match);
         Game game = gameService.getLastBySet(set);
         String productName = set.getProduct().getName();
         float price = game.getPrice();
-        CurrentState currentState = new CurrentState(gameState.getId(), match.getId(), set.getId(), game.getId(), productName, price);
+        currentState = new CurrentState(gameState.getId(), match.getId(), set.getId(), game.getId(), productName, price);
         return currentState;
     }
 
@@ -65,17 +69,18 @@ public class GameController {
         Match match = matchService.getByState(gameState);
         Set set = setService.getLastByMatch(match);
         Game game = gameService.getLastBySet(set);
+        //Game game = new Game(set, price);
         game.setPrice(price);
-        gameService.update(game);
+        gameService.create(game);
     }
 
-    @RequestMapping(value = "/buy/{id}", method = RequestMethod.POST)
-    public void buy(@PathVariable("id") long id) {
+    @RequestMapping(value = "/buy/{id}/{id1}", method = RequestMethod.POST)
+    public void buy(@PathVariable("id") long id, @PathVariable("id1") long id1) {
         GameState gameState = gameStateService.read(id);
         Match match = matchService.getByState(gameState);
         Set set = setService.getLastByMatch(match);
         Game game = gameService.getLastBySet(set);
-        User user = userService.read(1);
+        User user = userService.read(id1);
         UserProduct userProduct = new UserProduct(user, set.getProduct(), game.getPrice());
         userProductService.create(userProduct);
     }
@@ -88,8 +93,8 @@ public class GameController {
     }
 
     @RequestMapping(value = "/join/{name}", method = RequestMethod.POST)
-    public void join(@PathVariable("name") String name) {
-        gameEngine.join(name);
+    public User join(@PathVariable("name") String name) {
+        return gameEngine.join(name);
     }
 
     @RequestMapping(value = "/beginGame/{id}", method = RequestMethod.POST)

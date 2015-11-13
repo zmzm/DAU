@@ -59,10 +59,10 @@ public class GameThreadImpl extends Thread implements GameThread {
             Product product = productService.getRandomProduct();
 
             Set set = new Set(match, product);
-            //Game game = new Game(set, 55);
+            Game game = new Game(set, 55);
 
             setService.create(set);
-            //gameService.create(game);
+            gameService.create(game);
         //}
 
        /* Game game = new Game(set, price);

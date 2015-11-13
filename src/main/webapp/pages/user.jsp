@@ -26,21 +26,38 @@
     <![endif]-->
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script>
+        function getCookie(name) {
+            var re = new RegExp(name + "=([^;]+)");
+            var value = re.exec(document.cookie);
+            return (value != null) ? (value[1]) : null;
+        }
         $(document).ready(function () {
-            var gameStateId = null;
-            var userId = null;
-            $('#join').on('click', function () {
-                var name = $("#name").val();
+            var gameStateId = getCookie("gameId");
+            var userId = getCookie("userId");
+            (function () {
+                setInterval(function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/game/state/' + gameStateId,
+                        success: function (data) {
+                            console.log(data);
+                            if(data == ''){
+                                document.getElementById("state").innerHTML = "Game not started!!!!!";
+                            }
+                            else {
+                                document.getElementById("state").innerHTML = 'Match: ' + data.matchId + ' | Set: ' + data.setId + ' | Game: ' + data.gameId + ' | Product: ' + data.productName + ' | Price: ' + data.price;
+                            }
+                        },
+                        error: function () {
+                        }
+                    })
+                }, 1500);
+            })();
+            $('#buy').on('click', function () {
                 $.ajax({
                     type: 'POST',
-                    url: '/game/join/' + name,
-                    success: function (data) {
-                        gameStateId = data.gameState.id;
-                        userId = data.id;
-                        document.cookie="userId=" + userId;
-                        document.cookie="gameId=" + gameStateId;
-                        window.location.replace("http://localhost:8080/pages/user.jsp");
-                        alert("User joined");
+                    url: '/game/buy/' + gameStateId + '/' + userId,
+                    success: function () {
                     },
                     error: function () {
                         alert("Error");
@@ -55,8 +72,13 @@
 <a href="#">Logged as: <sec:authentication property="principal.username"/></a>
 <a class="btn btn-default" href="<c:url value="/logout" />" role="button">Logout</a>
 
-<input type="text" id="name"/>
-<button id="join" class="btn btn-default">Join</button>
-
+<script type="text/javascript">
+    document.write("User ID: ");
+    document.write(getCookie("userId"));
+    document.write(" Game ID: ");
+    document.write(getCookie("gameId"));
+</script>
+<button id="buy" class="btn btn-default">Buy</button>
+<div id="state"></div>
 </body>
 </html>

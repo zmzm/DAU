@@ -35,7 +35,6 @@
                     type: 'POST',
                     url: '/game/create',
                     success: function (data) {
-//                        alert("Game Ok");
                         gameState = data;
                     },
                     error: function () {
@@ -48,7 +47,7 @@
                     type: 'POST',
                     url: '/game/start',
                     success: function () {
-//                        alert("Game Started");
+                        checkState();
                     },
                     error: function () {
                         alert("Error");
@@ -60,41 +59,27 @@
                     type: 'POST',
                     url: '/game/stop',
                     success: function () {
-//                        alert("Game Stopped");
                     },
                     error: function () {
                         alert("Error");
                     }
                 })
             });
-            $('#state').on('click', function () {
-                $.ajax({
-                    type: 'POST',
-                    url: '/game/state/' + gameState,
-                    success: function (data) {
-                        console.log(data);
-                        $('body').append($('<div>', {
-                            text: 'Match: ' + data.matchId + ' | Set: ' + data.setId + ' | Game: ' + data.gameId + ' | Product: ' + data.productName + ' | Price: ' + data.price
-                        }));
-                    },
-                    error: function () {
-                        alert("Error");
-                    }
-                })
-            });
-            $('#join').on('click', function () {
-                var name = $("#name").val();
-                $.ajax({
-                    type: 'POST',
-                    url: '/game/join/' + name,
-                    success: function () {
-//                        alert("User joined");
-                    },
-                    error: function () {
-                        alert("Error");
-                    }
-                })
-            });
+            function checkState() {
+                setInterval(function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/game/state/' + gameState,
+                        success: function (data) {
+                            console.log(data);
+                            document.getElementById("state").innerHTML = 'Match: ' + data.matchId + ' | Set: ' + data.setId + ' | Game: ' + data.gameId + ' | Product: ' + data.productName + ' | Price: ' + data.price;
+                        },
+                        error: function () {
+                        }
+                    })
+                }, 1500);
+            }
+
             $('#users').on('click', function () {
                 $.ajax({
                     type: 'POST',
@@ -118,19 +103,6 @@
                     type: 'POST',
                     url: '/game/price/' + gameState + '/' + price,
                     success: function () {
-//                        alert("Price changed");
-                    },
-                    error: function () {
-                        alert("Error");
-                    }
-                })
-            });
-            $('#buy').on('click', function () {
-                $.ajax({
-                    type: 'POST',
-                    url: '/game/buy/' + gameState,
-                    success: function () {
-//                        alert("Product bought");
                     },
                     error: function () {
                         alert("Error");
@@ -142,7 +114,6 @@
                     type: 'POST',
                     url: '/game/beginGame/' + gameState,
                     success: function () {
-//                        alert("Product bought");
                     },
                     error: function () {
                         alert("Error");
@@ -154,7 +125,6 @@
                     type: 'POST',
                     url: '/game/endGame/' + gameState,
                     success: function () {
-//                        alert("Product bought");
                     },
                     error: function () {
                         alert("Error");
@@ -175,16 +145,12 @@
 <button id="create" class="btn btn-default">Create</button>
 <button id="start" class="btn btn-default">Start</button>
 <button id="stop" class="btn btn-default">Stop</button>
-<button id="state" class="btn btn-default">State</button>
 <button id="users" class="btn btn-default">Users</button>
 
-<input type="text" id="name"/>
-<button id="join" class="btn btn-default">Join</button>
 <input type="text" id="newPrice"/>
 <button id="price" class="btn btn-default">New Price</button>
-<button id="buy" class="btn btn-default">Buy</button>
 <button id="beginGame" class="btn btn-default">Begin new game</button>
 <button id="endGame" class="btn btn-default">End game</button>
-<div></div>
+<div id="state"></div>
 </body>
 </html>
