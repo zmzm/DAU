@@ -23,6 +23,9 @@ public class Set {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Column(name = "joker", nullable = true)
+    private int joker;
+
     @JsonCreator
     public Set() {
     }
@@ -54,5 +57,13 @@ public class Set {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public int getJoker() {
+        return joker;
+    }
+
+    public void setJoker(int joker) {
+        this.joker = joker;
     }
 }

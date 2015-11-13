@@ -23,7 +23,7 @@ public class SetServiceImpl implements SetService {
 
     @Override
     public Set read(long id) {
-        return setRepository.getOne(id);
+        return setRepository.findOne(id);
     }
 
     @Override

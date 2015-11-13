@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User read(long id) {
-        return userRepository.getOne(id);
+        return userRepository.findOne(id);
     }
 
     @Override

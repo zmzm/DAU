@@ -37,7 +37,6 @@ public class GameController {
     }
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
     public void start() {
         gameEngine.start();
     }
@@ -50,8 +49,11 @@ public class GameController {
     @RequestMapping(value = "/state/{id}", method = RequestMethod.POST)
     public CurrentState state(@PathVariable("id") long id) {
         GameState gameState = gameStateService.read(id);
-        Match match = matchService.getByState(gameState);
         CurrentState currentState = null;
+        if (gameState == null) {
+            return currentState;
+        }
+        Match match = matchService.getByState(gameState);
         if (match == null) {
             return currentState;
         }
@@ -130,9 +132,13 @@ public class GameController {
         gameService.create(newGame);
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public void handlerError(Exception e) {
-        e.printStackTrace();
+    @RequestMapping(value = "/joker/{id}/{joker}/{userId}", method = RequestMethod.POST)
+    public void joker(@PathVariable("id") long id, @PathVariable("joker") int joker,@PathVariable("userId") long userId) {
+        Set set = setService.read(id);
+        set.setJoker(joker);
+        setService.update(set);
+        User user = userService.read(userId);
+        user.setMoney(user.getMoney() - 10);
+        userService.update(user);
     }
 }

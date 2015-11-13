@@ -28,6 +28,11 @@
 
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script>
+        function getCookie(name) {
+            var re = new RegExp(name + "=([^;]+)");
+            var value = re.exec(document.cookie);
+            return (value != null) ? (value[1]) : null;
+        }
         $(document).ready(function () {
             var gameState = null;
             $('#create').on('click', function () {
@@ -36,6 +41,7 @@
                     url: '/game/create',
                     success: function (data) {
                         gameState = data;
+                        document.cookie = "gameId=" + gameState;
                     },
                     error: function () {
                         alert("Error");
@@ -47,7 +53,6 @@
                     type: 'POST',
                     url: '/game/start',
                     success: function () {
-                        checkState();
                     },
                     error: function () {
                         alert("Error");
@@ -65,25 +70,29 @@
                     }
                 })
             });
-            function checkState() {
+            (function () {
                 setInterval(function () {
                     $.ajax({
                         type: 'POST',
-                        url: '/game/state/' + gameState,
+                        url: '/game/state/' + getCookie("gameId"),
                         success: function (data) {
                             console.log(data);
-                            document.getElementById("state").innerHTML = 'Match: ' + data.matchId + ' | Set: ' + data.setId + ' | Game: ' + data.gameId + ' | Product: ' + data.productName + ' | Price: ' + data.price;
+                            if(data == ''){
+                                document.getElementById("state").innerHTML = "Game not started!!!!!";
+                            }
+                            else {
+                                document.getElementById("state").innerHTML = 'Match: ' + data.matchId + ' | Set: ' + data.setId + ' | Game: ' + data.gameId + ' | Product: ' + data.productName + ' | Price: ' + data.price;
+                            }
                         },
                         error: function () {
                         }
                     })
                 }, 1500);
-            }
-
+            })();
             $('#users').on('click', function () {
                 $.ajax({
                     type: 'POST',
-                    url: '/game/users/' + gameState,
+                    url: '/game/users/' + getCookie("gameId"),
                     success: function (data) {
                         console.log(data);
                         $.each(data, function (index, element) {
@@ -101,7 +110,7 @@
                 var price = $("#newPrice").val();
                 $.ajax({
                     type: 'POST',
-                    url: '/game/price/' + gameState + '/' + price,
+                    url: '/game/price/' + getCookie("gameId") + '/' + price,
                     success: function () {
                     },
                     error: function () {
@@ -112,7 +121,7 @@
             $('#beginGame').on('click', function () {
                 $.ajax({
                     type: 'POST',
-                    url: '/game/beginGame/' + gameState,
+                    url: '/game/beginGame/' + getCookie("gameId"),
                     success: function () {
                     },
                     error: function () {
@@ -123,7 +132,7 @@
             $('#endGame').on('click', function () {
                 $.ajax({
                     type: 'POST',
-                    url: '/game/endGame/' + gameState,
+                    url: '/game/endGame/' + getCookie("gameId"),
                     success: function () {
                     },
                     error: function () {

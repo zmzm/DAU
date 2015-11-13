@@ -34,6 +34,7 @@
         $(document).ready(function () {
             var gameStateId = getCookie("gameId");
             var userId = getCookie("userId");
+            var setId = null;
             (function () {
                 setInterval(function () {
                     $.ajax({
@@ -45,6 +46,7 @@
                                 document.getElementById("state").innerHTML = "Game not started!!!!!";
                             }
                             else {
+                                setId = data.setId;
                                 document.getElementById("state").innerHTML = 'Match: ' + data.matchId + ' | Set: ' + data.setId + ' | Game: ' + data.gameId + ' | Product: ' + data.productName + ' | Price: ' + data.price;
                             }
                         },
@@ -57,6 +59,18 @@
                 $.ajax({
                     type: 'POST',
                     url: '/game/buy/' + gameStateId + '/' + userId,
+                    success: function () {
+                    },
+                    error: function () {
+                        alert("Error");
+                    }
+                })
+            });
+            $('#joker').on('click', function () {
+                var joker = $("#jokerValue").val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/game/joker/' + setId + '/' + joker + '/' + userId,
                     success: function () {
                     },
                     error: function () {
@@ -79,6 +93,8 @@
     document.write(getCookie("gameId"));
 </script>
 <button id="buy" class="btn btn-default">Buy</button>
+<input type="text" id="jokerValue"/>
+<button id="joker" class="btn btn-default">Joker</button>
 <div id="state"></div>
 </body>
 </html>
