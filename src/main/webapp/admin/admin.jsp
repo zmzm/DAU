@@ -89,6 +89,25 @@
                     })
                 }, 1500);
             })();
+            (function () {
+                setInterval(function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/game/userProduct/' + getCookie("gameId"),
+                        success: function (data) {
+                            console.log(data);
+                            if(data == ''){
+                                document.getElementById("userProduct").innerHTML = "Product not bought";
+                            }
+                            else {
+                                document.getElementById("userProduct").innerHTML = 'User: ' + data.user.name + ' | Product: ' + data.product.name + ' | Set: ' + data.set.id + ' | Price: ' + data.price;
+                            }
+                        },
+                        error: function () {
+                        }
+                    })
+                }, 1500);
+            })();
             $('#users').on('click', function () {
                 $.ajax({
                     type: 'POST',
@@ -161,5 +180,6 @@
 <button id="beginGame" class="btn btn-default">Begin new game</button>
 <button id="endGame" class="btn btn-default">End game</button>
 <div id="state"></div>
+<div id="userProduct"></div>
 </body>
 </html>

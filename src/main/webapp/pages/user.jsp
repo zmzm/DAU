@@ -59,7 +59,8 @@
                 $.ajax({
                     type: 'POST',
                     url: '/game/buy/' + gameStateId + '/' + userId,
-                    success: function () {
+                    success: function (data) {
+                        alert(data);
                     },
                     error: function () {
                         alert("Error");
@@ -86,12 +87,6 @@
 <a href="#">Logged as: <sec:authentication property="principal.username"/></a>
 <a class="btn btn-default" href="<c:url value="/logout" />" role="button">Logout</a>
 
-<script type="text/javascript">
-    document.write("User ID: ");
-    document.write(getCookie("userId"));
-    document.write(" Game ID: ");
-    document.write(getCookie("gameId"));
-</script>
 <button id="buy" class="btn btn-default">Buy</button>
 <input type="text" id="jokerValue"/>
 <button id="joker" class="btn btn-default">Joker</button>

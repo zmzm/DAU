@@ -23,6 +23,10 @@ public class UserProduct {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "set_id", nullable = true)
+    private Set sett;
+
     @Column(name = "price", nullable = false)
     private float price;
 
@@ -30,9 +34,10 @@ public class UserProduct {
     public UserProduct() {
     }
 
-    public UserProduct(User user, Product product, float price) {
+    public UserProduct(User user, Product product, Set set, float price) {
         this.user = user;
         this.product = product;
+        this.sett = set;
         this.price = price;
     }
 
@@ -66,5 +71,13 @@ public class UserProduct {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public Set getSet() {
+        return sett;
+    }
+
+    public void setSet(Set set) {
+        this.sett = set;
     }
 }

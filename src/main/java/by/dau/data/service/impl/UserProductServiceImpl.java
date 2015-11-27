@@ -1,6 +1,7 @@
 package by.dau.data.service.impl;
 
 import by.dau.data.entity.Product;
+import by.dau.data.entity.Set;
 import by.dau.data.entity.User;
 import by.dau.data.entity.UserProduct;
 import by.dau.data.repository.UserProductRepository;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserProductServiceImpl implements UserProductService {
+public class UserProductServiceImpl implements UserProductService  {
 
     @Autowired
     private UserProductRepository userProductRepository;
@@ -29,6 +30,11 @@ public class UserProductServiceImpl implements UserProductService {
     @Override
     public UserProduct update(UserProduct userProduct) {
         return userProductRepository.saveAndFlush(userProduct);
+    }
+
+    @Override
+    public UserProduct findBySet(Set set) {
+        return userProductRepository.findUserProductBySet(set);
     }
 
     @Override

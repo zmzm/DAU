@@ -70,21 +70,37 @@ public class GameController {
         GameState gameState = gameStateService.read(id);
         Match match = matchService.getByState(gameState);
         Set set = setService.getLastByMatch(match);
-        Game game = gameService.getLastBySet(set);
-        //Game game = new Game(set, price);
-        game.setPrice(price);
+        //Game game = gameService.getLastBySet(set);
+        Game game = new Game(set, price);
+        //game.setPrice(price);
         gameService.create(game);
     }
 
     @RequestMapping(value = "/buy/{id}/{id1}", method = RequestMethod.POST)
-    public void buy(@PathVariable("id") long id, @PathVariable("id1") long id1) {
+    public String buy(@PathVariable("id") long id, @PathVariable("id1") long id1) {
         GameState gameState = gameStateService.read(id);
         Match match = matchService.getByState(gameState);
         Set set = setService.getLastByMatch(match);
-        Game game = gameService.getLastBySet(set);
+        List<Game> games = gameService.getAllBySet(set);
+        Game lastGame = games.get(games.size() - 1);
+        float price = lastGame.getPrice();
         User user = userService.read(id1);
-        UserProduct userProduct = new UserProduct(user, set.getProduct(), game.getPrice());
+        if (userProductService.findBySet(set) != null) {
+            return "You are late.";
+        }
+        if (games.size() > 1 && (games.get(games.size() - 2).getPrice() - lastGame.getPrice()) == set.getJoker()) {
+            UserProduct userProduct = new UserProduct(user, set.getProduct(), set, 0);
+            userProductService.create(userProduct);
+            return "Product bought with joker";
+        }
+        if (user.getMoney() < price) {
+            return "No money.";
+        }
+        user.setMoney(user.getMoney() - price);
+        userService.update(user);
+        UserProduct userProduct = new UserProduct(user, set.getProduct(), set, lastGame.getPrice());
         userProductService.create(userProduct);
+        return "Product bought.";
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.POST)
@@ -107,7 +123,7 @@ public class GameController {
         List<Game> games = gameService.getAllBySet(set);
         if (games.size() != 0) {
             Game game = games.get(games.size() - 1);
-            if (game.getPrice() == 0) {
+            if (game.getPrice() == 0 || userProductService.findBySet(set) != null) {
                 Set newSet = new Set(match, productService.getRandomProduct());
                 setService.create(newSet);
                 Game newGame = new Game(newSet, 55);
@@ -133,12 +149,24 @@ public class GameController {
     }
 
     @RequestMapping(value = "/joker/{id}/{joker}/{userId}", method = RequestMethod.POST)
-    public void joker(@PathVariable("id") long id, @PathVariable("joker") int joker,@PathVariable("userId") long userId) {
+    public String joker(@PathVariable("id") long id, @PathVariable("joker") int joker, @PathVariable("userId") long userId) {
         Set set = setService.read(id);
         set.setJoker(joker);
         setService.update(set);
         User user = userService.read(userId);
-        user.setMoney(user.getMoney() - 10);
+        if (user.getMoney() < 15) {
+            return "No money.";
+        }
+        user.setMoney(user.getMoney() - 15);
         userService.update(user);
+        return "Joker is bought.";
+    }
+
+    @RequestMapping(value = "/userProduct/{id}", method = RequestMethod.POST)
+    public UserProduct userProduct(@PathVariable("id") long id) {
+        GameState gameState = gameStateService.read(id);
+        Match match = matchService.getByState(gameState);
+        Set set = setService.getLastByMatch(match);
+        return userProductService.findBySet(set);
     }
 }
