@@ -67,15 +67,6 @@ public class GameController {
         return currentState;
     }
 
-    /*@RequestMapping(value = "/price/{id}/{price}", method = RequestMethod.POST)
-    public void newPrice(@PathVariable("id") long id, @PathVariable("price") float price) {
-        GameState gameState = gameStateService.read(id);
-        Match match = matchService.getByState(gameState);
-        Set set = setService.getLastByMatch(match);
-        Game game = new Game(set, price);
-        gameService.create(game);
-    }*/
-
     @RequestMapping(value = "/buy/{id}/{id1}", method = RequestMethod.POST)
     public String buy(@PathVariable("id") long id, @PathVariable("id1") long id1) {
         GameState gameState = gameStateService.read(id);
@@ -114,39 +105,6 @@ public class GameController {
     public User join(@PathVariable("name") String name) {
         return gameEngine.join(name);
     }
-
-    /*@RequestMapping(value = "/beginGame/{id}", method = RequestMethod.POST)
-    public void beginGame(@PathVariable("id") long id) {
-        GameState gameState = gameStateService.read(id);
-        Match match = matchService.getByState(gameState);
-        Set set = setService.getLastByMatch(match);
-        List<Game> games = gameService.getAllBySet(set);
-        if (games.size() != 0) {
-            Game game = games.get(games.size() - 1);
-            if (game.getPrice() == 0 || userProductService.findBySet(set) != null) {
-                Set newSet = new Set(match, productService.getRandomProduct());
-                setService.create(newSet);
-                Game newGame = new Game(newSet, 55);
-                gameService.create(newGame);
-            } else {
-                Game newGame = new Game(set, 55);
-                gameService.create(newGame);
-            }
-        } else {
-            Game newGame = new Game(set, 55);
-            gameService.create(newGame);
-        }
-    }*/
-
-    /*@RequestMapping(value = "/endGame/{id}", method = RequestMethod.POST)
-    public void endGame(@PathVariable("id") long id) {
-        GameState gameState = gameStateService.read(id);
-        Match match = matchService.getByState(gameState);
-        Set newSet = new Set(match, productService.getRandomProduct());
-        setService.create(newSet);
-        Game newGame = new Game(newSet, 55);
-        gameService.create(newGame);
-    }*/
 
     @RequestMapping(value = "/joker/{id}/{joker}/{userId}", method = RequestMethod.POST)
     public String joker(@PathVariable("id") long id, @PathVariable("joker") int joker, @PathVariable("userId") long userId) {
