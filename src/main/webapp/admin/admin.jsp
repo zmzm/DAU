@@ -125,40 +125,6 @@
                     }
                 })
             });
-/*            $('#price').on('click', function () {
-                var price = $("#newPrice").val();
-                $.ajax({
-                    type: 'POST',
-                    url: '/game/price/' + getCookie("gameId") + '/' + price,
-                    success: function () {
-                    },
-                    error: function () {
-                        alert("Error");
-                    }
-                })
-            });
-            $('#beginGame').on('click', function () {
-                $.ajax({
-                    type: 'POST',
-                    url: '/game/beginGame/' + getCookie("gameId"),
-                    success: function () {
-                    },
-                    error: function () {
-                        alert("Error");
-                    }
-                })
-            });
-            $('#endGame').on('click', function () {
-                $.ajax({
-                    type: 'POST',
-                    url: '/game/endGame/' + getCookie("gameId"),
-                    success: function () {
-                    },
-                    error: function () {
-                        alert("Error");
-                    }
-                })
-            });*/
         });
     </script>
 </head>
@@ -167,18 +133,11 @@
 <a href="#">Logged as: <sec:authentication property="principal.username"/></a>
 <a class="btn btn-default" href="<c:url value="/logout" />" role="button">Logout</a>
 <br>
-<!--<a class="btn btn-default" href="<c:url value="/game/create" />" role="button">Create</a>
-    <a class="btn btn-default" href="<c:url value="/admin/start" />" role="button">Start</a>
-    <a class="btn btn-default" href="<c:url value="/admin/stop" />" role="button">Stop</a>-->
 <button id="create" class="btn btn-default">Create</button>
 <button id="start" class="btn btn-default">Start</button>
 <button id="stop" class="btn btn-default">Stop</button>
 <button id="users" class="btn btn-default">Users</button>
 
-<%--<input type="text" id="newPrice"/>
-<button id="price" class="btn btn-default">New Price</button>
-<button id="beginGame" class="btn btn-default">Begin new game</button>
-<button id="endGame" class="btn btn-default">End game</button>--%>
 <div id="state"></div>
 <div id="userProduct"></div>
 </body>
