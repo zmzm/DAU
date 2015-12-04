@@ -125,7 +125,7 @@
                     }
                 })
             });
-            $('#price').on('click', function () {
+/*            $('#price').on('click', function () {
                 var price = $("#newPrice").val();
                 $.ajax({
                     type: 'POST',
@@ -158,7 +158,7 @@
                         alert("Error");
                     }
                 })
-            });
+            });*/
         });
     </script>
 </head>
@@ -175,10 +175,10 @@
 <button id="stop" class="btn btn-default">Stop</button>
 <button id="users" class="btn btn-default">Users</button>
 
-<input type="text" id="newPrice"/>
+<%--<input type="text" id="newPrice"/>
 <button id="price" class="btn btn-default">New Price</button>
 <button id="beginGame" class="btn btn-default">Begin new game</button>
-<button id="endGame" class="btn btn-default">End game</button>
+<button id="endGame" class="btn btn-default">End game</button>--%>
 <div id="state"></div>
 <div id="userProduct"></div>
 </body>

@@ -5,8 +5,10 @@ import by.dau.data.entity.*;
 import by.dau.data.service.*;
 import by.dau.data.state.CurrentState;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -65,16 +67,14 @@ public class GameController {
         return currentState;
     }
 
-    @RequestMapping(value = "/price/{id}/{price}", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/price/{id}/{price}", method = RequestMethod.POST)
     public void newPrice(@PathVariable("id") long id, @PathVariable("price") float price) {
         GameState gameState = gameStateService.read(id);
         Match match = matchService.getByState(gameState);
         Set set = setService.getLastByMatch(match);
-        //Game game = gameService.getLastBySet(set);
         Game game = new Game(set, price);
-        //game.setPrice(price);
         gameService.create(game);
-    }
+    }*/
 
     @RequestMapping(value = "/buy/{id}/{id1}", method = RequestMethod.POST)
     public String buy(@PathVariable("id") long id, @PathVariable("id1") long id1) {
@@ -115,7 +115,7 @@ public class GameController {
         return gameEngine.join(name);
     }
 
-    @RequestMapping(value = "/beginGame/{id}", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/beginGame/{id}", method = RequestMethod.POST)
     public void beginGame(@PathVariable("id") long id) {
         GameState gameState = gameStateService.read(id);
         Match match = matchService.getByState(gameState);
@@ -136,9 +136,9 @@ public class GameController {
             Game newGame = new Game(set, 55);
             gameService.create(newGame);
         }
-    }
+    }*/
 
-    @RequestMapping(value = "/endGame/{id}", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/endGame/{id}", method = RequestMethod.POST)
     public void endGame(@PathVariable("id") long id) {
         GameState gameState = gameStateService.read(id);
         Match match = matchService.getByState(gameState);
@@ -146,7 +146,7 @@ public class GameController {
         setService.create(newSet);
         Game newGame = new Game(newSet, 55);
         gameService.create(newGame);
-    }
+    }*/
 
     @RequestMapping(value = "/joker/{id}/{joker}/{userId}", method = RequestMethod.POST)
     public String joker(@PathVariable("id") long id, @PathVariable("joker") int joker, @PathVariable("userId") long userId) {
