@@ -1,6 +1,6 @@
-package by.dau.data.state;
+package by.dau.data.dto;
 
-public class CurrentState {
+public class CurrentStateDTO {
 
     long gameStateId;
     long matchId;
@@ -9,9 +9,9 @@ public class CurrentState {
     String productName;
     float price;
 
-    public CurrentState(){}
+    public CurrentStateDTO(){}
 
-    public CurrentState(long gameStateId, long matchId, long setId, long gameId, String productName, float price) {
+    public CurrentStateDTO(long gameStateId, long matchId, long setId, long gameId, String productName, float price) {
         this.gameStateId = gameStateId;
         this.matchId = matchId;
         this.setId = setId;

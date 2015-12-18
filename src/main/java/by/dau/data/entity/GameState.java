@@ -22,7 +22,7 @@ public class GameState {
     @Column(name = "id", length = 6, nullable = false)
     private long id;
 
-    @Column(name = "state")
+    @Column(name = "dto")
     private int state;
 
     @Column(name = "created")

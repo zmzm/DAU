@@ -7,10 +7,7 @@ import by.dau.data.entity.GameState;
 import by.dau.data.entity.Set;
 import by.dau.data.entity.User;
 import by.dau.data.service.*;
-import by.dau.data.state.CurrentState;
-import by.dau.mvc.controller.GameController;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -86,7 +83,7 @@ public class MainTest {
         System.out.println("game " + game.getId() + game.getPrice());
 
         /*GameController gameController = new GameController();
-        CurrentState currentState = gameController.state(gameState.getId());
+        CurrentState currentState = gameController.dto(gameState.getId());
         System.out.println(currentState);*/
     }
 

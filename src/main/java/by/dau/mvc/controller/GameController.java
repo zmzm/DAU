@@ -3,7 +3,7 @@ package by.dau.mvc.controller;
 import by.dau.data.engine.GameEngine;
 import by.dau.data.entity.*;
 import by.dau.data.service.*;
-import by.dau.data.state.CurrentState;
+import by.dau.data.dto.CurrentStateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,22 +49,22 @@ public class GameController {
     }
 
     @RequestMapping(value = "/state/{id}", method = RequestMethod.POST)
-    public CurrentState state(@PathVariable("id") long id) {
+    public CurrentStateDTO state(@PathVariable("id") long id) {
         GameState gameState = gameStateService.read(id);
-        CurrentState currentState = null;
+        CurrentStateDTO currentStateDTO = null;
         if (gameState == null) {
-            return currentState;
+            return currentStateDTO;
         }
         Match match = matchService.getByState(gameState);
         if (match == null) {
-            return currentState;
+            return currentStateDTO;
         }
         Set set = setService.getLastByMatch(match);
         Game game = gameService.getLastBySet(set);
         String productName = set.getProduct().getName();
         float price = game.getPrice();
-        currentState = new CurrentState(gameState.getId(), match.getId(), set.getId(), game.getId(), productName, price);
-        return currentState;
+        currentStateDTO = new CurrentStateDTO(gameState.getId(), match.getId(), set.getId(), game.getId(), productName, price);
+        return currentStateDTO;
     }
 
     @RequestMapping(value = "/buy/{id}/{id1}", method = RequestMethod.POST)

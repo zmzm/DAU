@@ -29,14 +29,12 @@ public class GameThreadImpl implements GameThread {
     @Resource
     UserProductService userProductService;
 
-    private GameEngine gameEngine;
     private Match match;
     private GameState gameState;
     private Random rnd = new Random();
 
     @Override
     public void start(final GameEngine gameEngine) {
-        this.gameEngine = gameEngine;
         this.gameState = gameStateService.read(gameEngine.getGameStateId());
 
         this.match = new Match(this.gameState);
